@@ -1,24 +1,66 @@
-<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Delete Users</title>
+    <title>Remove User</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        .btnStyle{
+            background: #c01d1d;
+            color: #fff;
+            border: none;
+            padding: 3px 9px;
+            border-radius: 50%;
+            cursor: pointer;
+            float:right;
+        }
+    </style>
 </head>
-
 <body>
-    <% if(typeof employeeList != 'undefined') { %>
-    <% employeeList.forEach((employee) => { %>
-    <div>
-        <a href="http://localhost:5000/users/delEmployee/<%= employee.eid %>"><%= employee.eid %></a>
-        <p><%= employee.name %></p>
-    </div>
-    <% }); %>
-    <% } else { %>
-    <p>Err</p>
-    <% } %>
-</body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">AttendanceApp</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a id = "a" class="nav-item nav-link active" href="#">Add New User<span class="sr-only">(current)</span></a>
+            <a class="nav-item nav-link" href="#">Remove User</a>
+            <a class="nav-item nav-link" href="#">LogOut</a>
+            
+          </div>
+        </div>
+      </nav>
 
+      <div style="margin-top: 50px;">
+      <table class="table table-hover container-md a">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">User ID</th>
+            <th scope="col">Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto <button class="btnStyle">X</button></td>
+            
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton<button class="btnStyle">X</button></td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Larry</td>
+            <td>the Bird<button class="btnStyle">X</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+</body>
 </html>
