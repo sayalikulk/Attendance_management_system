@@ -4,53 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <title>Register</title>
 </head>
 <body>
-    
+    <nav class="navbar navbar-dark bg-dark">
+        <span class="navbar-brand mb-0 h1">AttendanceApp</span>
+      </nav>    
 <br>
 <div class="container white">
     <br>
     <h3 class="black-text center">Register</h3>
     <div class="container">
-        <div>
+
             <form autocomplete="off" action="/users/register" method="POST">
-                <div class="row" style="margin-bottom: 0;">
-                    <div class="input-field col s6">
-                        <input name="eid" type="text" required <% if(typeof prevInput != 'undefined') { %> 
-                            value = "<%= prevInput.eid %>" <% } %> >
+                <div class="form-row">
+                    <div class="col">
                         <label for="eid">Employee ID</label>
+                        <input class="form-control" name="eid" type="text" required <% if(typeof prevInput != 'undefined') { %> 
+                            value = "<%= prevInput.eid %>" <% } %> >
                     </div>
-                    <div class="input-field col s6">
-                        <input name="name" type="text" required <% if(typeof prevInput != 'undefined') { %>
-                            value = "<%= prevInput.name %>" <% } %> >
-                            
+                    <div class="col">
                         <label for="name">Name</label>
+                        <input class='form-control' name="name" type="text" required <% if(typeof prevInput != 'undefined') { %>
+                            value = "<%= prevInput.name %>" <% } %> > 
                     </div>
                 </div>
-    
-                    <div class="input-field"  style="margin-top:0;">
-                        <input name="email" type="email" class="validate" required <% if(typeof prevInput != 'undefined') { %>
-                            value = "<%= prevInput.email %>" <% } %> >
-                            
+                    <div class="form-group"  style="margin-top:0;">
                         <label for="email">Email</label>
+                        <input class="form-control" name="email" type="email" class="validate" required <% if(typeof prevInput != 'undefined') { %>
+                            value = "<%= prevInput.email %>" <% } %> >
                     </div>
                 
-                
-                    <div class="input-field">
-                        <input name="password" type="password" class="validate" required <% if(typeof prevInput != 'undefined') { %>
-                            value="<%= prevInput.password %>" <% } %> >
+                    <div class="form-row">
+                    <div class="col">
                         <label for="password">Password</label>
+                        <input class="form-control" name="password" type="password" class="validate" required <% if(typeof prevInput != 'undefined') { %>
+                            value="<%= prevInput.password %>" <% } %> >
                     </div>
                 
-                <div class="row">
-                    <div class="input-field col s12">
-                        <input name="password2" type="password" class="validate" required <% if(typeof prevInput != 'undefined') { %>
-                            value="<%= prevInput.password2 %>"<% } %> >
+                
+                    <div class="col">
                         <label for="password">Confirm Password</label>
+                        <input class="form-control" name="password2" type="password" class="validate" required <% if(typeof prevInput != 'undefined') { %>
+                            value="<%= prevInput.password2 %>"<% } %> >
+                        
                     </div>
                 </div>
-                <button type="submit" class="btn light-blue darken-3">Register</button>
+                <button type="submit" class="btn btn-primary">Register</button>
                 <br>
                 <br>
             </form>

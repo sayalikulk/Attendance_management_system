@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Login</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 </head>
 <body>
+    <nav class="navbar navbar-dark bg-dark">
+        <span class="navbar-brand mb-0 h1">AttendanceApp</span>
+      </nav>
     <br>
 <div class="container white">
     <br>
@@ -15,17 +19,17 @@
         <div class="row">
             <form autocomplete="off" action="/users/login" method="POST" class="col s6">
 
-                <div class="input-field">
-                    <input type="text" name="eid" required>
+                <div class="form-group">
                     <label for="eid">Employee ID</label>
+                    <input class="form-control" type="text" name="eid" required>
                 </div>
 
-                <div class="input-field">
-                    <input type="password" name="password" required>
+                <div class="form-group">
                     <label for="password">Password</label>
+                    <input class="form-control" type="password" name="password" required>
                 </div>
 
-                <button class="btn light-blue darken-3" type="submit">Login</button>
+                <button class="btn btn-primary" type="submit">Login</button>
                 <br>
                 <br>
             </form>
