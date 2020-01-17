@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Simple Recorder.js demo with record, stop and pause</title>
+    <style>
+      .container-main{
+        /* padding-left: 50px; */
+        /* padding-top: 30px;
+        padding-left: 30px;  */
+        text-align: center;  
+        margin-top: 50px;   
+      }
+      .container-2{
+        padding: 10px;
+      }
+      #formats{
+
+        padding:20px;
+      }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark">
+      <span class="navbar-brand mb-0 h1">AttendanceApp</span>
+    </nav>
+    <div class="container-main">
+      <br>
+        <h2 class="black-text center">Voice Authentication</h2>
+    <div class="container-2">
+    <div class="btn-group btn-group-lg" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary" id="recordButton">Record</button>
+      <button type="button" class="btn btn-secondary" id="pauseButton">Pause</button>
+      <button type="button" class="btn btn-secondary" id="stopButton">Stop</button>
+    </div>
+    
+
+    <div id="formats">Format: start recording to see sample rate</div>
+  	<h3>Recordings</h3><br>
+  	<div id="recordingsList"></div>
+
+    <!-- inserting these scripts at the end to be able to use all the elements in the DOM -->
+  	<script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+  	<script src="js/app.js"></script>
+  </div>
+  </body>
+</html>
