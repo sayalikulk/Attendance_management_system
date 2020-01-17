@@ -1,4 +1,4 @@
-const PORT = process.env.PORT || 5000
+    const PORT = process.env.PORT || 5000
 const express = require('express');
 const path = require('path');
 const userRouter = require('./routes/userRoutes');
@@ -10,6 +10,10 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
 const expressLayouts = require('express-layouts');
+const scheduler = require('node-schedule');
+const Employee = require('./models/employee');
+
+
 
 // Initialize app
 const app = express();
@@ -87,6 +91,13 @@ app.post('/loca', (req, res) => {
         }
     });
 });
+
+var j = scheduler.scheduleJob('0 11 * * *', () => {
+    Employee.updateMany({}, {attendanceFlag: false}), () => {
+        console.log('Attendance Flags reset');
+    };
+});
+
 
 app.listen(PORT, ()=>console.log(`Server started on port: ${PORT}`))
 

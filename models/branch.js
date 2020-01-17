@@ -22,6 +22,16 @@ const branchSchema = mongoose.Schema({
     name: {
         type: String,
         required: true
+    },
+    timeSlot: {
+        startTime: {
+            type: String,
+            default: "07:00:00"
+        },
+        endTime: {
+            type: String,
+            default: "10:00:00"
+        }
     }
 });
 
@@ -32,14 +42,14 @@ const Branch = mongoose.model('branch', branchSchema);
     coords: {
         lat1: 19,
         long1: 70,
-        lat2: 19.5,
+        lat2: 19.8,
         long2: 70.5
     },
-    name: "Test branch"
+    name: "Test branch1"
 })
 testBranch.save((err, data) => {
     console.log(err);
-    console.log(data);
+    // console.log(data);
 }); */
 
 
@@ -50,13 +60,13 @@ module.exports.findBranchById = (id, callback) => {
     console.log(id);
     Branch.findOne({_id: id}, (err, branch) => {
         if(err) console.log(err);
-        console.log("BRANCH:", branch);
+        // console.log("BRANCH:", branch);
         callback(branch);
     });
 };
 
 module.exports.returnTestBranch = (callback) => {
-    Branch.findOne({name: 'Test branch'}, (err, branch) => {
+    Branch.findOne({name: 'Test branch1'}, (err, branch) => {
         if(err) console.log(err);
         console.log("BRANCH:", branch);
         callback(branch);

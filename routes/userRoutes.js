@@ -5,7 +5,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const Branch = require('../models/branch');
 const router = express.Router();
-const Attendance = require('../models/attendance');
+const Attendance = require('../models/workingDates');
 
 // REGISTRATION
 
@@ -171,7 +171,44 @@ router.get('/delEmployee/:id', (req, res) => {
 
 });
 
+router.get('/', (req, res) => {
+    res.render('userpage');
+});
 
-
+router.get('/mark', (req, res) => {
+    var today = new Date();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    console.log(time);
+    // console.log(req.user.branch);
+    const branch = Branch.findBranchById(req.user.branch,(branch) => {
+        const id = req.user.eid;
+        console.log(`Attendance req: ${id}`);
+/*         console.log("Current time:", time);
+        console.log("Start time:", branch.timeSlot.startTime);
+        console.log("End time:", branch.timeSlot.endTime); */
+        if(req.user.attendanceFlag) {
+            console.log('Already marked');
+            res.redirect('/users');
+        }
+        else if(branch.timeSlot.startTime < time && time < branch.timeSlot.endTime){
+            Employee.markAttendance(id, (result) => {
+                if(result) {
+                    console.log('Marked');
+                    res.redirect('/users');
+                }
+                else {
+                    console.log('error');
+                    res.redirect('/users');
+                }
+            });
+            
+        }
+        else {
+            console.log('Cannot register attendance now');
+            res.redirect('/users');
+        }
+    });
+    
+});
 
 module.exports = router;
