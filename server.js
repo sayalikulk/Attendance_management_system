@@ -12,6 +12,8 @@ const passport = require('passport');
 const expressLayouts = require('express-layouts');
 const scheduler = require('node-schedule');
 const Employee = require('./models/employee');
+const multer = require('multer');
+const upload = multer({dest: '/temp'});
 
 
 
@@ -25,10 +27,14 @@ mongoose.connect(process.env.DB, {useNewUrlParser:true, useUnifiedTopology: true
 
 
 // app.use(expressLayouts);
-app.use(express.urlencoded())
+app.use(express.urlencoded({
+    extended: true
+}))
 app.use(express.json())
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
+app.use(express.static('views'));
+app.use('/views', express.static('login'));
 
 
 
@@ -69,6 +75,7 @@ app.get('/loca', (req, res) => {
 })
 
 app.post('/loca', (req, res) => {
+    const id = req.user.eid;
     console.log(req.body);
     // Check if current location coords (stored in data) are within office
     var userCoords = req.body;
@@ -80,15 +87,26 @@ app.post('/loca', (req, res) => {
             branch.coords.long1 < userCoords.longitude && 
             userCoords.longitude < branch.coords.long2) {
                 // User in office
-                console.log('USER IN OFFICE')
+                /* console.log('USER IN OFFICE')
                 req.flash('success_msg', 'Location verified');
-                res.json({inOffice: true});
+                res.json({inOffice: true}); */
+                Employee.markAttendance(id, (result) => {
+                    if(result) {
+                        console.log('Marked');
+                        res.redirect('/users');
+                    }
+                    else {
+                        console.log('error');
+                        res.redirect('/users');
+                    }
+                });
             }
         else {
             req.flash('error_msg', 'Current location not in office');
             console.log('USER NOT IN OFFICE');
             res.json({inOffice: false});
         }
+        res.redirect('/users');
     });
 });
 
@@ -96,6 +114,21 @@ var j = scheduler.scheduleJob('0 11 * * *', () => {
     Employee.updateMany({}, {attendanceFlag: false}), () => {
         console.log('Attendance Flags reset');
     };
+});
+
+/* app.post('/records', upload.single('audio_file'), (req, res) => {
+    console.log(req.file);
+}); */
+
+app.get('/', (req,res)=>{
+    res.redirect("/users/login");
+});
+
+app.get('/logout', function (req, res) {
+    // console.log('Log out');
+    req.logout();
+    req.flash('success_msg', 'Logged out');
+    res.redirect('/users/login');
 });
 
 

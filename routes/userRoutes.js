@@ -1,6 +1,6 @@
 const express = require('express');
 const Employee = require('../models/employee');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const Branch = require('../models/branch');
@@ -11,7 +11,7 @@ const Attendance = require('../models/workingDates');
 
 router.get('/register', (req, res) => {
     if(req.user) { 
-        if(req.user.type == 'admin') {
+        if(req.user.UserType == 'admin') {
             res.render('register');
         }
         else {
@@ -134,7 +134,7 @@ router.post('/login', passport.authenticate('local', {
     console.log('Login successful');
     req.flash('success_msg', 'Login successful!');
     req.session.user = req.user;
-    res.redirect('/loca');
+    res.redirect('/users');
 });
 
 
@@ -172,36 +172,32 @@ router.get('/delEmployee/:id', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    res.render('userpage');
+    res.render('user');
 });
 
 router.get('/mark', (req, res) => {
     var today = new Date();
-    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    function addZero(i) {
+        if(i < 10) i = "0" + i;
+        return i;
+    }
+    var time = addZero(today.getHours())
+    + ":" + addZero(today.getMinutes())
+    + ":" + addZero(today.getSeconds());
     console.log(time);
     // console.log(req.user.branch);
     const branch = Branch.findBranchById(req.user.branch,(branch) => {
         const id = req.user.eid;
         console.log(`Attendance req: ${id}`);
-/*         console.log("Current time:", time);
+        console.log("Current time:", time);
         console.log("Start time:", branch.timeSlot.startTime);
-        console.log("End time:", branch.timeSlot.endTime); */
+        console.log("End time:", branch.timeSlot.endTime);
         if(req.user.attendanceFlag) {
             console.log('Already marked');
-            res.redirect('/users');
+            res.send('You have already marked your attendance');
         }
         else if(branch.timeSlot.startTime < time && time < branch.timeSlot.endTime){
-            Employee.markAttendance(id, (result) => {
-                if(result) {
-                    console.log('Marked');
-                    res.redirect('/users');
-                }
-                else {
-                    console.log('error');
-                    res.redirect('/users');
-                }
-            });
-            
+            res.redirect("http://localhost:5000/loca");
         }
         else {
             console.log('Cannot register attendance now');

@@ -133,8 +133,9 @@ module.exports.markAttendance = (id, callback) => {
 			}
 
 			})
-			
+			callback(true);
 		}
+
 	})
 }
 /*module.exports.getOfficeCoords = () => {
