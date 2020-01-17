@@ -11,7 +11,7 @@ const Attendance = require('../models/workingDates');
 
 router.get('/register', (req, res) => {
     if(req.user) { 
-        if(req.user.UserType == 'admin') {
+        if(req.user.userType == 'admin') {
             res.render('register');
         }
         else {
@@ -67,7 +67,11 @@ router.post('/register', validationChecks, (req, res) => {
                     if(err) console.log(err);
                     else {
                         req.flash('success_msg', 'You have been successfully registered');
-                        res.redirect('/'); // Where to?
+                        if(req.user.userType === 'admin'){
+                            res.redirect('/users/admin');
+                        } else {
+                            res.redirect('/users');
+                        }
                     }
                 });
             });
@@ -80,7 +84,7 @@ router.post('/register', validationChecks, (req, res) => {
 
 router.get('/login', (req, res) => {
     if(!req.user)
-        res.render('login');
+        res.render('../views/login');
     else
         res.send(`You are already logged in as ${req.user.name}!`);
 });
@@ -134,14 +138,24 @@ router.post('/login', passport.authenticate('local', {
     console.log('Login successful');
     req.flash('success_msg', 'Login successful!');
     req.session.user = req.user;
-    res.redirect('/users');
+    if(req.user.userType === 'admin'){
+        res.redirect('/users/admin');
+    } else {
+        res.redirect('/users');
+    }
+    
 });
 
 
 // ADMIN ROUTES
+router.get('/admin', (req, res) => {
+    if(req.user.userType === 'admin'){
+        res.render("../views/admin");
+    }
+});
 router.get('/addEmployee', (req, res) => {
     res.send('Add employee');
-    if(req.user.type == 'admin') {
+    if(req.user.userType == 'admin') {
         res.redirect('/users/register');
     }
     else {
@@ -152,7 +166,7 @@ router.get('/addEmployee', (req, res) => {
 router.get('/delEmployee', (req, res) => {
     if(req.user.userType == 'admin') {
         Employee.getEmployeesByGroupId(req.user.groupId, (list) => {
-            res.render('delEmployee', {employeeList: list});
+            res.render('../views/delEmployee', {employeeList: list});
         });
     }
     else {

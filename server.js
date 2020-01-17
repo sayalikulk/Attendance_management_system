@@ -1,4 +1,4 @@
-    const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000
 const express = require('express');
 const path = require('path');
 const userRouter = require('./routes/userRoutes');
@@ -33,8 +33,8 @@ app.use(express.urlencoded({
 app.use(express.json())
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-app.use(express.static('views'));
-app.use('/views', express.static('login'));
+app.use(express.static(path.join(__dirname + '/views')));
+
 
 
 
@@ -93,11 +93,11 @@ app.post('/loca', (req, res) => {
                 Employee.markAttendance(id, (result) => {
                     if(result) {
                         console.log('Marked');
-                        res.redirect('/users');
+                        console.log(res);   
+                        req.redirect('/users');
                     }
                     else {
                         console.log('error');
-                        res.redirect('/users');
                     }
                 });
             }
@@ -106,8 +106,8 @@ app.post('/loca', (req, res) => {
             console.log('USER NOT IN OFFICE');
             res.json({inOffice: false});
         }
-        res.redirect('/users');
     });
+    // res.redirect('/users');
 });
 
 var j = scheduler.scheduleJob('0 11 * * *', () => {
