@@ -8,16 +8,22 @@
     <title>Register</title>
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-dark">
-        <span class="navbar-brand mb-0 h1">AttendanceApp</span>
-      </nav>    
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+        <div class="container">
+          <a class="navbar-brand js-scroll-trigger" href="#page-top" style="color: white;">AttendanceApp</a>
+        </div>
+      </nav>   
 <br>
+
 <div class="container white">
     <br>
-    <h3 class="black-text center">Register</h3>
+    
     <div class="container">
-
-            <form autocomplete="off" action="/users/register" method="POST">
+        
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <h3 class="black-text center">Register</h3>
+                    <form autocomplete="off" action="/users/register" method="POST">
                 <div class="form-row">
                     <div class="col">
                         <label for="eid">Employee ID</label>
@@ -55,6 +61,9 @@
                 <br>
                 <br>
             </form>
+        
+        </div>
+        </div>
         </div>
     </div>
 </div>
