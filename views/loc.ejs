@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>LOC</h1>
+    <button id="btn">Click</button>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            function showPosition(position) {
+                // console.log("Latitude: " + position.coords   .latitude + ", Longitude: " + position.coords.longitude)
+                var data = {
+                    latitude:19.6,
+                    longitude: 70.3
+                };
+                console.log(data);
+                // Creating a XHR object 
+                let xhr = new XMLHttpRequest();
+                let url = "/loca";
+
+                // open a connection 
+                xhr.open("POST", url, true);
+
+                // Set the request header i.e. which type of content you are sending 
+                xhr.setRequestHeader("Content-Type", "application/json");
+
+                // Create a state change callback 
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+
+                        // Print received data from server 
+                        // result.innerHTML = this.responseText;
+                        console.log('Response received:' + this.responseText);
+
+                    }
+                };
+                
+                data =  JSON.stringify(data);
+
+                // Sending data with the request 
+                xhr.send(data);
+
+            }
+            function showError(error) {
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        console.log("User denied the request for Geolocation.");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        // remove the next line
+                        showPosition(null);
+                        console.log("Location information is unavailable.");
+                        break;
+                    case error.TIMEOUT:
+                        console.log("The request to get user location timed out.");
+                        break;
+                    case error.UNKNOWN_ERR:
+                        console.log("An unknown error occurred.");
+                        break;
+                }
+            }
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition, showError)
+            } else {
+                console.log("Geolocation API doesn't supported.")
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

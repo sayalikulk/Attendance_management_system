@@ -1,0 +1,93 @@
+const PORT = process.env.PORT || 5000
+const express = require('express');
+const path = require('path');
+const userRouter = require('./routes/userRoutes');
+const mongoose = require('mongoose');
+const Branch = require('./models/branch');
+require('dotenv/config')
+const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
+const session = require('express-session');
+const passport = require('passport');
+const expressLayouts = require('express-layouts');
+
+// Initialize app
+const app = express();
+
+// Connect to database: (Add your URI string to ../config/mongodbURI.js)
+mongoose.connect(process.env.DB, {useNewUrlParser:true, useUnifiedTopology: true})
+    .then(console.log('Connected to MongoDB'))
+	.catch((err) => console.log(err));
+
+
+// app.use(expressLayouts);
+app.use(express.urlencoded())
+app.use(express.json())
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
+
+
+
+
+
+// Body-parser, cookie-parser middleware
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(cookieParser());
+
+
+// Express Session. Note: Session data is stored on the server side only
+app.use(session({
+    secret:'secret',
+    saveUninitialized: true,
+    resave: true
+}));
+
+// Passport
+app.use(passport.initialize());
+app.use(passport.session());
+
+// connect-flash
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.success_msg = req.flash('success_msg');
+    res.locals.error_msg = req.flash('error_msg');
+    res.locals.error = req.flash('error');  // Passport sets its own 'error' messages
+    next();
+});
+
+
+app.use('/users', userRouter);
+
+app.get('/loca', (req, res) => {
+    res.render('loc');
+})
+
+app.post('/loca', (req, res) => {
+    console.log(req.body);
+    // Check if current location coords (stored in data) are within office
+    var userCoords = req.body;
+    console.log(req.user);
+    let branch = Branch.findBranchById(req.user.branch, (branch) => {
+        console.log(branch);
+        if(branch.coords.lat1 < userCoords.latitude &&
+            userCoords.latitude < branch.coords.lat2 &&
+            branch.coords.long1 < userCoords.longitude && 
+            userCoords.longitude < branch.coords.long2) {
+                // User in office
+                console.log('USER IN OFFICE')
+                req.flash('success_msg', 'Location verified');
+                res.json({inOffice: true});
+            }
+        else {
+            req.flash('error_msg', 'Current location not in office');
+            console.log('USER NOT IN OFFICE');
+            res.json({inOffice: false});
+        }
+    });
+});
+
+app.listen(PORT, ()=>console.log(`Server started on port: ${PORT}`))
+
+

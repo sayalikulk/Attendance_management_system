@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Delete Users</title>
+</head>
+
+<body>
+    <% if(typeof employeeList != 'undefined') { %>
+    <% employeeList.forEach((employee) => { %>
+    <div>
+        <a href="http://localhost:5000/users/delEmployee/<%= employee.eid %>"><%= employee.eid %></a>
+        <p><%= employee.name %></p>
+    </div>
+    <% }); %>
+    <% } else { %>
+    <p>Err</p>
+    <% } %>
+</body>
+
+</html>

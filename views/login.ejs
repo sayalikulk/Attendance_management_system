@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+</head>
+<body>
+    <br>
+<div class="container white">
+    <br>
+    <h3 class="black-text center">Login</h3>
+    <div class="container">
+        <div class="row">
+            <form autocomplete="off" action="/users/login" method="POST" class="col s6">
+
+                <div class="input-field">
+                    <input type="text" name="eid" required>
+                    <label for="eid">Employee ID</label>
+                </div>
+
+                <div class="input-field">
+                    <input type="password" name="password" required>
+                    <label for="password">Password</label>
+                </div>
+
+                <button class="btn light-blue darken-3" type="submit">Login</button>
+                <br>
+                <br>
+            </form>
+        </div>
+        <% if(typeof success_msg != 'undefined') { %>
+        <div class="red-text">
+            <p><%= success_msg %></p>
+        </div>
+        <% } %>
+        <% if(typeof error_msg != 'undefined') { %>
+        <div class="red-text">
+            <p><%= error_msg %></p>
+        </div>
+        <% } %>
+        <% if(typeof error != 'undefined') { %>
+        <div class="red-text">
+            <p><%= error %></p>
+        </div>
+        <% } %>
+        <br>
+    </div>
+</div>
+</body>
+</html>
