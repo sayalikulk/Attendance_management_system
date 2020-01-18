@@ -3,8 +3,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Remove User</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Attendance App</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -15,56 +15,34 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a id = "a" class="nav-item nav-link active" href="/users/register">Add New User<span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="/users/delEmployee">Remove User</a>
+            <a class="nav-item nav-link" href="#">Remove User</a>
             <a class="nav-item nav-link" href="/logout">LogOut</a>
             
           </div>
         </div>
       </nav>
-      <!-- <button onclick="toggle()">Lol</button> --> 
-<script>
-    function toggle() {
-        let element = document.getElementById("a");
-        element.classList.toggle("disabled");
-        element.classList.toggle("active");
-    }
-</script>
 
-<script>
-    window.onload = function() {
-    
-    var chart = new CanvasJS.Chart("chartContainer", {
-        theme: "light2", // "light1", "light2", "dark1", "dark2"
-        exportEnabled: true,
-        animationEnabled: true,
-        title: {
-            text: "Month Attendance Analysis"
-        },
-        data: [{
-            type: "pie",
-            startAngle: 25,
-            toolTipContent: "<b>{label}</b>: {y}%",
-            showInLegend: "true",
-            legendText: "{label}",
-            indexLabelFontSize: 16,
-            indexLabel: "{label} - {y}%",
-            dataPoints: [
-                { y: 51.08, label: "Present" },
-                { y: 27.34, label: "Absent" },
-            ]
-        }]
-    });
-    chart.render();
-    
-    }
-    </script>
-    </head>
-    <body>
-    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
-    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+      <div style="margin-top: 50px;">
+      <table class="table table-hover container-md a">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Employee ID</th>
+            <th scope="col">Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% var counter=1; %>
+          <% employeeList.forEach((emp) => { %>
+          <tr>
+            <th scope="row"><%= counter %></th>
+            <td><a href="#"><%= emp.eid %></a></td>
+            <td><a href="#"><%= emp.eid %><</a></td>
+            <% counter++; %>
+          </tr>
+         <% }); %>
+        </tbody>
+      </table>
+    </div>
 </body>
 </html>
