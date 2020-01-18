@@ -36,8 +36,8 @@
           <% employeeList.forEach((emp) => { %>
           <tr>
             <th scope="row"><%= counter %></th>
-            <td><a href="/users/admin/<%= emp.id %>"><%= emp.eid %></a></td>
-            <td><a href="/users/admin/<%= emp.id %>"><%= emp.name %></a></td>
+            <td><a href="/users/admin/<%= emp._id %>"><%= emp.eid %></a></td>
+            <td><a href="/users/admin/<%= emp._id %>"><%= emp.name %></a></td>
             <% counter++; %>
           </tr>
          <% }); %>

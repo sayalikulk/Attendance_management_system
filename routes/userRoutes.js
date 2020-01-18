@@ -147,9 +147,24 @@ router.post('/login', passport.authenticate('local', {
 
 // ADMIN ROUTES
 router.get('/admin', (req, res) => {
-    if (req.user.userType === 'admin') {
-        res.render("../views/admin");
+    if (req.user.userType == 'admin') {
+        Employee.getEmployeesByGroupId(req.user.groupId, (list) => {
+            res.render('../views/admin', { employeeList: list });
+        });
     }
+    else {
+        res.send('You do not have access to this page');
+    }
+});
+
+router.get('/admin/:id', (req, res) => {
+    Employee.getAttendance(req.params.id, (perc) => {
+        console.log(perc);
+        res.render('admin-view',
+            {
+                perc: perc
+            });
+    });
 });
 
 router.get('/addEmployee', (req, res) => {

@@ -49,8 +49,8 @@
             indexLabelFontSize: 16,
             indexLabel: "{label} - {y}%",
             dataPoints: [
-                { y: 51.08, label: "Present" },
-                { y: 27.34, label: "Absent" },
+                { y: parseInt("<%= perc %>"), label: "Present" },
+                { y: parseInt("<%= 100 - perc %>"), label: "Absent" },
             ]
         }]
     });
