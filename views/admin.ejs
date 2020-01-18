@@ -15,7 +15,7 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
             <a id = "a" class="nav-item nav-link active" href="/users/register">Add New User<span class="sr-only">(current)</span></a>
-            <a class="nav-item nav-link" href="#">Remove User</a>
+            <a class="nav-item nav-link" href="/users/delEmployee">Remove User</a>
             <a class="nav-item nav-link" href="/logout">LogOut</a>
             
           </div>
@@ -36,8 +36,8 @@
           <% employeeList.forEach((emp) => { %>
           <tr>
             <th scope="row"><%= counter %></th>
-            <td><a href="#"><%= emp.eid %></a></td>
-            <td><a href="#"><%= emp.eid %><</a></td>
+            <td><a href="/users/admin/<%= emp.id %>"><%= emp.eid %></a></td>
+            <td><a href="/users/admin/<%= emp.id %>"><%= emp.name %></a></td>
             <% counter++; %>
           </tr>
          <% }); %>

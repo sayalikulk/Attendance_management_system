@@ -44,12 +44,14 @@
         <tbody>
           <% var counter=1; %>
           <% employeeList.forEach((emp) => { %>
+          <% if(emp.userType !== 'admin') { %>
           <tr>
             <th scope="row"><%= counter %></th>
             <td><%= emp.eid %></td>
-            <td><a href="http://localhost:5000/users/delEmployee/<%= emp.eid %>"><%= emp.eid %> <button class="btnStyle">X</button></a></td>
+            <td><a href="/users/delEmployee/<%= emp.eid %>"><%= emp.eid %> <button class="btnStyle">X</button></a></td>
             <% counter++; %>
           </tr>
+          <% } %>
          <% }); %>
         </tbody>
       </table>

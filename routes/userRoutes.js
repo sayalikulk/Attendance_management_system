@@ -54,9 +54,7 @@ router.post('/register', validationChecks, (req, res) => {
             name: req.body.name,
             email: req.body.email,
             password: req.body.password,
-            groupId: 1,
-            userType: 'admin'
-         
+            groupId: req.user.groupId,
         });
         Branch.returnTestBranch((branch) => {
             console.log(branch);
@@ -149,10 +147,16 @@ router.post('/login', passport.authenticate('local', {
 
 // ADMIN ROUTES
 router.get('/admin', (req, res) => {
-    if(req.user.userType === 'admin'){
-        res.render("../views/admin");
+    if(req.user.userType == 'admin') {
+        Employee.getEmployeesByGroupId(req.user.groupId, (list) => {
+            res.render('../views/admin', {employeeList: list});
+        });
+    }
+    else {
+        res.send('You do not have access to this page');
     }
 });
+
 router.get('/addEmployee', (req, res) => {
     res.send('Add employee');
     if(req.user.userType == 'admin') {
@@ -220,5 +224,6 @@ router.get('/mark', (req, res) => {
     });
     
 });
+
 
 module.exports = router;

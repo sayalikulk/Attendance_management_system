@@ -30,7 +30,8 @@ const employeeSchema = mongoose.Schema({
 		type: String,
 	},
 	userType: {
-		type: String
+		type: String,
+		default: 'user'
     },
     branch: {
         type: mongoose.Schema.Types.ObjectId,
