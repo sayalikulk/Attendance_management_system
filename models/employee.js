@@ -30,8 +30,8 @@ const employeeSchema = mongoose.Schema({
 		type: String,
 	},
 	userType: {
-		type: String,
-		default: 'user'
+        type: String,
+        default: 'user'
     },
     branch: {
         type: mongoose.Schema.Types.ObjectId,
@@ -66,7 +66,7 @@ module.exports.hashPassword = (newUser, callback) => {
 };
 
 module.exports.getUserById = (id, callback) => {
-	Employee.findById(id, callback);
+	Employee.findById(id, (callback));
 };
 
 module.exports.getUserByEID = (eid, callback) => {
@@ -139,6 +139,27 @@ module.exports.markAttendance = (id, callback) => {
 
 	})
 }
+(
+module.exports.getAttendance = (id, callback) => {
+    Employee.getUserById(id, (err, user) => {
+        if(err) console.log(err);
+        else {
+            const months = ["JAN", "FEB", "MAR","APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];	
+            var month = months[(new Date()).getMonth()]
+            var presentDatesOfMonth = user.presentDates.filter((date) => date.includes(month));
+            var presentCount = presentDatesOfMonth.length;
+            console.log('presentCount', presentCount);
+            WorkingDate.find({}, (err, data) => {
+                if(err) console.log(err);
+                var totalCount = data.filter((date) => date.date.includes(month)).length;
+                console.log('totalCount', totalCount);
+                var perc = (presentCount / totalCount) * 100
+                callback(perc);
+            });
+        }
+    });
+});
+
 /*module.exports.getOfficeCoords = () => {
     
 };*/

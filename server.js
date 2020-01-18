@@ -12,9 +12,9 @@ const passport = require('passport');
 const expressLayouts = require('express-layouts');
 const scheduler = require('node-schedule');
 const Employee = require('./models/employee');
-const multer = require('multer');
-const upload = multer({dest: '/temp'});
-
+    /* const multer = require('multer');
+    const upload = multer({dest: '/temp'}); */
+    
 
 
 // Initialize app

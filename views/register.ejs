@@ -61,7 +61,12 @@
                 <br>
                 <br>
             </form>
-        
+        </div>
+        <% if(typeof errors != 'undefined') { %>
+        <div class="error-msgs">
+            <p class="alert alert-danger"><%= errors[0].msg %></p>
+        </div>
+        <% } %>
         </div>
         </div>
         </div>

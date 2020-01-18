@@ -10,8 +10,8 @@ const Attendance = require('../models/workingDates');
 // REGISTRATION
 
 router.get('/register', (req, res) => {
-    if(req.user) { 
-        if(req.user.userType == 'admin') {
+    if (req.user) {
+        if (req.user.userType == 'admin') {
             res.render('register');
         }
         else {
@@ -25,13 +25,13 @@ router.get('/register', (req, res) => {
 
 const { check, validationResult } = require('express-validator');
 let validationChecks = [
-	check('eid', 'Employee ID is required').notEmpty(),
-	check('name', 'Name is required').notEmpty(),
-	check('email', 'Email address is required').notEmpty(),
-	check('email', 'Please enter a valid email address').normalizeEmail().isEmail(),
-	check('password', 'Please enter a password').notEmpty(),
-	check('password', 'Minimum  length of password should be 8 characters').isLength({min:8}),
-	check('password2', 'Passwords don\'t match').matches('password')
+    check('eid', 'Employee ID is required').notEmpty(),
+    check('name', 'Name is required').notEmpty(),
+    check('email', 'Email address is required').notEmpty(),
+    check('email', 'Please enter a valid email address').normalizeEmail().isEmail(),
+    check('password', 'Please enter a password').notEmpty(),
+    check('password', 'Minimum  length of password should be 8 characters').isLength({ min: 8 }),
+    check('password2', 'Passwords don\'t match').matches('password')
 ];
 
 router.post('/register', validationChecks, (req, res) => {
@@ -39,7 +39,7 @@ router.post('/register', validationChecks, (req, res) => {
     console.log(req.body);
 
     const errors = validationResult(req);
-    if(!errors.isEmpty()) {
+    if (!errors.isEmpty()) {
         console.log('Validation errors!');
         console.log(errors.array());
         res.render('register', {
@@ -62,10 +62,10 @@ router.post('/register', validationChecks, (req, res) => {
             Employee.hashPassword(newEmployee, (hashed) => {
                 console.log(hashed);
                 newEmployee.save((err) => {
-                    if(err) console.log(err);
+                    if (err) console.log(err);
                     else {
                         req.flash('success_msg', 'You have been successfully registered');
-                        if(req.user.userType === 'admin'){
+                        if (req.user.userType === 'admin') {
                             res.redirect('/users/admin');
                         } else {
                             res.redirect('/users');
@@ -74,92 +74,87 @@ router.post('/register', validationChecks, (req, res) => {
                 });
             });
         });
-        
+
     }
 });
 
 // LOGIN
 
 router.get('/login', (req, res) => {
-    if(!req.user)
+    if (!req.user)
         res.render('../views/login');
     else
         res.send(`You are already logged in as ${req.user.name}!`);
 });
 
-passport.use(new LocalStrategy({usernameField: 'eid'},
-    function(eid, password, done) {
-		// console.log('checking...');
+passport.use(new LocalStrategy({ usernameField: 'eid' },
+    function (eid, password, done) {
+        // console.log('checking...');
         Employee.getUserByEID(eid, (err, user) => {
-            if(err) {
-				console.log(err);
-				return done(err);
-			}
-            else if(!user) {
-				// console.log('No such user');
-                return done(null, false, {message:'Unknown user'});
+            if (err) {
+                console.log(err);
+                return done(err);
             }
-             else {
-			// 	console.log('User found')
+            else if (!user) {
+                // console.log('No such user');
+                return done(null, false, { message: 'Unknown user' });
+            }
+            else {
+                // 	console.log('User found')
                 Employee.comparePassword(password, user.password, (err, isMatch) => {
-                    if(err) console.log(err);
-                    else if(isMatch) {
+                    if (err) console.log(err);
+                    else if (isMatch) {
                         // console.log('Match!');
                         return done(null, user);
                     }
-                    else  {
+                    else {
                         // console.log('Invalid password');
-                        return done(null, false, {message:'Invalid password'});
+                        return done(null, false, { message: 'Invalid password' });
                     }
                 });
             }
         });
     }));
-passport.serializeUser(function(user, done) {
-  	done(null, user.id);
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
 });
 
-passport.deserializeUser(function(id, done) {
-  Employee.getUserById(id, function(err, user) {
-		done(err, user);
-  });
+passport.deserializeUser(function (id, done) {
+    Employee.getUserById(id, function (err, user) {
+        done(err, user);
+    });
 });
 
 
 router.post('/login', passport.authenticate('local', {
-    failureRedirect:'/users/login',
+    failureRedirect: '/users/login',
     failureFlash: true,
     successFlash: 'Welcome!'
 }),
-(req, res) => {
-    // Function called when authentication successful
-    console.log('Login successful');
-    req.flash('success_msg', 'Login successful!');
-    req.session.user = req.user;
-    if(req.user.userType === 'admin'){
-        res.redirect('/users/admin');
-    } else {
-        res.redirect('/users');
-    }
-    
-});
+    (req, res) => {
+        // Function called when authentication successful
+        console.log('Login successful');
+        req.flash('success_msg', 'Login successful!');
+        req.session.user = req.user;
+        if (req.user.userType === 'admin') {
+            res.redirect('/users/admin');
+        } else {
+            res.redirect('/users');
+        }
+
+    });
 
 
 // ADMIN ROUTES
 router.get('/admin', (req, res) => {
-    if(req.user.userType == 'admin') {
-        Employee.getEmployeesByGroupId(req.user.groupId, (list) => {
-            res.render('../views/admin', {employeeList: list});
-        });
-    }
-    else {
-        res.send('You do not have access to this page');
+    if (req.user.userType === 'admin') {
+        res.render("../views/admin");
     }
 });
 
 router.get('/addEmployee', (req, res) => {
     res.send('Add employee');
-    if(req.user.userType == 'admin') {
+    if (req.user.userType == 'admin') {
         res.redirect('/users/register');
     }
     else {
@@ -168,9 +163,9 @@ router.get('/addEmployee', (req, res) => {
 });
 
 router.get('/delEmployee', (req, res) => {
-    if(req.user.userType == 'admin') {
+    if (req.user.userType == 'admin') {
         Employee.getEmployeesByGroupId(req.user.groupId, (list) => {
-            res.render('../views/delEmployee', {employeeList: list});
+            res.render('../views/delEmployee', { employeeList: list });
         });
     }
     else {
@@ -181,7 +176,7 @@ router.get('/delEmployee', (req, res) => {
 router.get('/delEmployee/:id', (req, res) => {
     const id = req.params.id;
     console.log(`delete req id: ${id}`);
-    
+
     Employee.deleteById(id, () => {
         console.log(`User deleted: ${id}`);
         res.redirect('/users/delEmployee');
@@ -190,31 +185,40 @@ router.get('/delEmployee/:id', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    res.render('user');
+    console.log(req.user);
+    Employee.getAttendance(req.user._id, (perc) => {
+        console.log(perc);
+        res.render('user',
+            {
+                user: req.user,
+                perc: perc
+            });
+    });
+
 });
 
 router.get('/mark', (req, res) => {
     var today = new Date();
     function addZero(i) {
-        if(i < 10) i = "0" + i;
+        if (i < 10) i = "0" + i;
         return i;
     }
     var time = addZero(today.getHours())
-    + ":" + addZero(today.getMinutes())
-    + ":" + addZero(today.getSeconds());
+        + ":" + addZero(today.getMinutes())
+        + ":" + addZero(today.getSeconds());
     console.log(time);
     // console.log(req.user.branch);
-    const branch = Branch.findBranchById(req.user.branch,(branch) => {
+    const branch = Branch.findBranchById(req.user.branch, (branch) => {
         const id = req.user.eid;
         console.log(`Attendance req: ${id}`);
         console.log("Current time:", time);
         console.log("Start time:", branch.timeSlot.startTime);
         console.log("End time:", branch.timeSlot.endTime);
-        if(req.user.attendanceFlag) {
+        if (req.user.attendanceFlag) {
             console.log('Already marked');
             res.send('You have already marked your attendance');
         }
-        else if(branch.timeSlot.startTime < time && time < branch.timeSlot.endTime){
+        else if (branch.timeSlot.startTime < time && time < branch.timeSlot.endTime) {
             res.redirect("http://localhost:5000/loca");
         }
         else {
@@ -222,7 +226,7 @@ router.get('/mark', (req, res) => {
             res.redirect('/users');
         }
     });
-    
+
 });
 
 

@@ -20,6 +20,7 @@
           </div>
         </div>
       </nav>
+      <!-- <p><%= user %>></p> -->
       <!-- <button onclick="toggle()">Lol</button> --> 
 <script>
     function toggle() {
@@ -31,7 +32,7 @@
 
 <script>
     window.onload = function() {
-    
+    console.log("<%= perc %>")
     var chart = new CanvasJS.Chart("chartContainer", {
         theme: "light2", // "light1", "light2", "dark1", "dark2"
         exportEnabled: true,
@@ -48,8 +49,8 @@
             indexLabelFontSize: 16,
             indexLabel: "{label} - {y}%",
             dataPoints: [
-                { y: 51.08, label: "Present" },
-                { y: 27.34, label: "Absent" },
+                { y: Number("<%= (perc) %>"), label: "Present" },
+                { y: Number("<%= (100 - perc) %>"), label: "Absent" },
             ]
         }]
     });
@@ -57,8 +58,6 @@
     
     }
     </script>
-    </head>
-    <body>
     <div id="chartContainer" style="height: 370px; width: 100%;"></div>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
